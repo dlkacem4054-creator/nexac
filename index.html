@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXAC Portal - Secure System</title>
+    <style>
+        :root {
+            --bg-dark: #07090e;
+            --accent-blue: #3b82f6;
+            --accent-hover: #60a5fa;
+            --text-light: #f3f4f6;
+            --text-gray: #9ca3af;
+            --border-color: rgba(59, 130, 246, 0.4);
+            --card-bg: rgba(13, 18, 30, 0.75);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية متدرجة متحركة */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 20%, rgba(37, 99, 235, 0.18) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* بطاقة البوابة مع تأثير دخول أنيق */
+        .portal-card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 45px;
+            width: 440px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 25px rgba(59, 130, 246, 0.1);
+            animation: fadeInCard 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+        }
+
+        @keyframes fadeInCard {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .secure-tag {
+            background-color: rgba(59, 130, 246, 0.12);
+            color: var(--accent-blue);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 30%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        p.subtitle {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-gray);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px 16px;
+            background-color: rgba(11, 15, 25, 0.8);
+            border: 2px solid #1e293b;
+            border-radius: 14px;
+            color: var(--text-light);
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+            background-color: #0b0f19;
+        }
+
+        .input-field::placeholder {
+            color: #4b5563;
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .generate-btn:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* نافذة النتيجة المنسدلة بتصميم عصري */
+        .result-container {
+            margin-top: 20px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: left;
+            display: none; /* مخفية حتى يتم التوليد */
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            color: #34d399;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .link-box {
+            display: flex;
+            gap: 8px;
+        }
+
+        .result-input {
+            flex: 1;
+            background: #07090e;
+            border: 1px solid #065f46;
+            color: #d1fae5;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 0 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #047857;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-card">
+        <span class="secure-tag">🛡️ NEXAC Security</span>
+        <h1>ADMIN PORTAL</h1>
+        <p class="subtitle">Generate an encrypted PC check link for target user</p>
+
+        <div class="input-group">
+            <label for="username">PLAYER USERNAME</label>
+            <div class="input-wrapper">
+                <input type="text" id="username" class="input-field" placeholder="e.g. Bachir_Da" autocomplete="off">
+            </div>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generateLink()">Generate Unique Link</button>
+
+        <!-- النتيجة تظهر هنا عند الضغط -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-title">✨ Link Generated Successfully!</div>
+            <div class="link-box">
+                <input type="text" id="generatedLink" class="result-input" readonly>
+                <button class="copy-btn" onclick="copyLink()">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                alert('Please enter a player username first!');
+                return;
+            }
+
+            // توليد رابط وهمي أو حقيقي بناءً على موقع السيرفر
+            const baseUrl = window.location.origin;
+            const uniqueLink = `${baseUrl}/download?user=${encodeURIComponent(username)}`;
+
+            // إظهار النتيجة بتصميم أنيق
+            document.getElementById('generatedLink').value = uniqueLink;
+            document.getElementById('resultContainer').style.display = 'block';
+        }
+
+        function copyLink() {
+            const copyText = document.getElementById('generatedLink');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+            
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
